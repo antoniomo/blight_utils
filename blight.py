@@ -8,7 +8,7 @@ VALOUR_DIVIDER = 100.0
 def combat(living_might, immortal_might, living_units=0, immortal_units=0):
     living_adjusted_might **= 2
     immortal_adjusted_might **= 2
-    living_wins = True if living_adjusted_might >= immortal_adjusted_might else 0
+    living_wins = True if living_adjusted_might > immortal_adjusted_might else 0
     if living_wins:
         print("Living wins")
         survivality = 1.0 - immortal_adjusted_might / living_adjusted_might

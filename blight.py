@@ -1,25 +1,36 @@
 from __future__ import division, print_function
+from math import floor
+
+# Might to valour ratio
+VALOUR_DIVIDER = 100.0
 
 
 def combat(living_might, immortal_might, living_units=0, immortal_units=0):
-    living_might **= 2
-    immortal_might **= 2
-    living_wins = True if living_might >= immortal_might else 0
+    living_adjusted_might **= 2
+    immortal_adjusted_might **= 2
+    living_wins = True if living_adjusted_might >= immortal_adjusted_might else 0
     if living_wins:
         print("Living wins")
-        higher, lower = living_might, immortal_might
-        survivor_pool = living_units
+        survivality = 1.0 - immortal_adjusted_might / living_adjusted_might
+        survivors = living_units * survivality
+        valour = immortal_might / VALOUR_DIVIDER
     else:
         print("Immortal wins")
-        higher, lower = immortal_might, living_might
-        survivor_pool = immortal_units
+        survivality = 1.0 - living_adjusted_might / immortal_adjusted_might
+        survivors = immortal_units * survivality
+        might_per_unit = immortal_might / immortal_units
+        valour = (immortal_units - survivors) * might_per_unit / VALOUR_DIVIDER
 
-    survivality = 1.0 - lower / higher
     print("Survival probability:", survivality)
-    print("Expected survivors:", survivor_pool * survivality)
+    print("Expected survivors:", survivors)
+    print("Expected valour:", floor(valour))
 
 
 def rcombat(attack_might, defenders_might, defender_units=0):
     survivality = 1.0 - attack_might / defenders_might
+    survivors = defender_units * survivality
+    might_per_unit = defenders_might / defender_units
+    valour = (defender_units - survivors) * might_per_unit / VALOUR_DIVIDER
     print("Survival probability:", survivality)
-    print("Expected survivors:", defender_units * survivality)
+    print("Expected survivors:", survivors)
+    print("Expected valour:", floor(valour))
